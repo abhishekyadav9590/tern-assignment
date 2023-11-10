@@ -5,7 +5,7 @@ import Button from '@mui/material/Button';
 import {Search} from '@mui/icons-material';
 import {useDispatch} from "react-redux";
 import {fetchJobsAsync} from "../../store/JobSlice";
-import {useSelector} from "react-redux";
+import {NavLink} from "react-router-dom";
 
 
 export interface IJobData {
@@ -42,6 +42,9 @@ export const Home = () => {
 
     return (
         <div className={css.home}>
+            <NavLink to={'/applied-jobs'}>
+                <Button variant={"contained"}>Applied Jobs</Button>
+            </NavLink>
             <form action="" className={css.welcomePage} onSubmit={handleSubmit}>
                 <h3>Job Search Portal</h3>
                 <div className="form-group">

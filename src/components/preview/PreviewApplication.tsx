@@ -8,7 +8,7 @@ import AccordionDetails from '@mui/material/AccordionDetails';
 import AccordionSummary from '@mui/material/AccordionSummary';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import Typography from "@mui/material/Typography";
-import {Box, Button, Card, CardContent, Tab, Tabs} from "@mui/material";
+import {Alert, Box, Button, Card, CardContent, Tab, Tabs} from "@mui/material";
 import {ArrowBack} from "@mui/icons-material";
 
 
@@ -35,106 +35,113 @@ export const PreviewApplication = () => {
         setValue(newValue);
     };
 
-    useEffect(() => {
-        if (!data.length) {
-            navigate('/')
-        }
-    }, []);
-
     return (
-        <div className={jobDetailCSS.jobDetail}>
+        <div className={jobDetailCSS.jobDetail} style={data.length ? undefined : {flexDirection: 'column'}}>
             <Button variant={"contained"} onClick={() => navigate(-1)}>
                 <ArrowBack/>
                 Back
             </Button>
-            <div className={jobDetailCSS.jobDescription}>
-                {
-                    data.map((application: any, index: number) => {
-                        return (
-                            <div key={index} style={{marginBottom:15}}>
-                                <Card sx={{minWidth: 275}}>
-                                    <CardContent>
-                                        <Typography variant="h5" component="div">
-                                            {application.job.name}
-                                        </Typography>
-                                        <Typography sx={{fontSize: 14}} color="text.secondary" gutterBottom>
-                                            Candidate Details
-                                        </Typography>
-                                        <Typography sx={{mb: 1.5}} variant="body2">
-                                            {application.candidate.name}
-                                        </Typography>
-                                        <Typography variant="body2">
-                                            {application.candidate.email}
-                                        </Typography>
-                                    </CardContent>
-                                </Card>
 
-                                <Accordion expanded={expanded === `panel-attachment-${index}`} onChange={handleChange(`panel-attachment-${index}`)}>
-                                    <AccordionSummary
-                                        expandIcon={<ExpandMoreIcon/>}
-                                        aria-controls="panel4bh-content"
-                                        id="panel4bh-header"
-                                    >
-                                        <Typography sx={{width: '33%', flexShrink: 0}}>
-                                            <b>Attachments</b>
-                                        </Typography>
-                                    </AccordionSummary>
-                                    <AccordionDetails>
-                                        <Tabs value={value} onChange={handleTabChange} aria-label="basic tabs example">
-                                            <Tab label="Resume" {...a11yProps(0)} />
-                                            <Tab label="Cover Letter" {...a11yProps(1)} />
+            {
+                data.length ?
+                    <div className={jobDetailCSS.jobDescription}>
+                        {
+                            data.map((application: any, index: number) => {
+                                return (
+                                    <div key={index} style={{marginBottom: 15}}>
+                                        <Card sx={{minWidth: 275}}>
+                                            <CardContent>
+                                                <Typography variant="h5" component="div">
+                                                    {application.job.name}
+                                                </Typography>
+                                                <Typography sx={{fontSize: 14}} color="text.secondary" gutterBottom>
+                                                    Candidate Details
+                                                </Typography>
+                                                <Typography sx={{mb: 1.5}} variant="body2">
+                                                    {application.candidate.name}
+                                                </Typography>
+                                                <Typography variant="body2">
+                                                    {application.candidate.email}
+                                                </Typography>
+                                            </CardContent>
+                                        </Card>
 
-                                        </Tabs>
-                                        <CustomTabPanel value={value} index={0}>
-                                            <Typography>
-                                                {
-                                                    // @ts-ignore
-                                                    <iframe src={application.candidate.resume} type="application/pdf"
-                                                            title={`${application.candidate.name}'s Resume`}
-                                                            width="100%" height="100%" style={{minHeight: '400px'}}/>
-                                                }
+                                        <Accordion expanded={expanded === `panel-attachment-${index}`}
+                                                   onChange={handleChange(`panel-attachment-${index}`)}>
+                                            <AccordionSummary
+                                                expandIcon={<ExpandMoreIcon/>}
+                                                aria-controls="panel4bh-content"
+                                                id="panel4bh-header"
+                                            >
+                                                <Typography sx={{width: '33%', flexShrink: 0}}>
+                                                    <b>Attachments</b>
+                                                </Typography>
+                                            </AccordionSummary>
+                                            <AccordionDetails>
+                                                <Tabs value={value} onChange={handleTabChange}
+                                                      aria-label="basic tabs example">
+                                                    <Tab label="Resume" {...a11yProps(0)} />
+                                                    <Tab label="Cover Letter" {...a11yProps(1)} />
 
-                                            </Typography>
-                                        </CustomTabPanel>
-                                        <CustomTabPanel value={value} index={1}>
-                                            <Typography>
-                                                {
-                                                    // @ts-ignore
-                                                    <iframe src={application.candidate.cover} type="application/pdf"
-                                                            title={`${application.candidate.name}'s Cover Letter`}
-                                                            width="100%" height="100%" style={{minHeight: '400px'}}/>
-                                                }
+                                                </Tabs>
+                                                <CustomTabPanel value={value} index={0}>
+                                                    <Typography>
+                                                        {
+                                                            // @ts-ignore
+                                                            <iframe type="application/pdf"
+                                                                    src={application.candidate.resume}
+                                                                    title={`${application.candidate.name}'s Resume`}
+                                                                    width="100%" height="100%"
+                                                                    style={{minHeight: '400px'}}/>
+                                                        }
 
-                                            </Typography>
-                                        </CustomTabPanel>
+                                                    </Typography>
+                                                </CustomTabPanel>
+                                                <CustomTabPanel value={value} index={1}>
+                                                    <Typography>
+                                                        {
+                                                            // @ts-ignore
+                                                            <iframe type="application/pdf"
+                                                                    src={application.candidate.cover}
+                                                                    title={`${application.candidate.name}'s Cover Letter`}
+                                                                    width="100%" height="100%"
+                                                                    style={{minHeight: '400px'}}/>
+                                                        }
+
+                                                    </Typography>
+                                                </CustomTabPanel>
 
 
-                                    </AccordionDetails>
-                                </Accordion>
+                                            </AccordionDetails>
+                                        </Accordion>
 
-                                <Accordion expanded={expanded === `panel-description-${index}`} onChange={handleChange(`panel-description-${index}`)}>
-                                    <AccordionSummary
-                                        expandIcon={<ExpandMoreIcon/>}
-                                        aria-controls="panel4bh-content"
-                                        id="panel4bh-header"
-                                    >
-                                        <Typography sx={{width: '33%', flexShrink: 0}}>
-                                            <b>Job Description</b>
-                                        </Typography>
-                                    </AccordionSummary>
-                                    <AccordionDetails>
-                                        <Typography>
-                                            <article
-                                                dangerouslySetInnerHTML={{__html: sanitize(application.job.contents)}}></article>
-                                        </Typography>
-                                    </AccordionDetails>
-                                </Accordion>
-                            </div>
-                        )
-                    })
-                }
+                                        <Accordion expanded={expanded === `panel-description-${index}`}
+                                                   onChange={handleChange(`panel-description-${index}`)}>
+                                            <AccordionSummary
+                                                expandIcon={<ExpandMoreIcon/>}
+                                                aria-controls="panel4bh-content"
+                                                id="panel4bh-header"
+                                            >
+                                                <Typography sx={{width: '33%', flexShrink: 0}}>
+                                                    <b>Job Description</b>
+                                                </Typography>
+                                            </AccordionSummary>
+                                            <AccordionDetails>
+                                                <Typography>
+                                                    <article
+                                                        dangerouslySetInnerHTML={{__html: sanitize(application.job.contents)}}></article>
+                                                </Typography>
+                                            </AccordionDetails>
+                                        </Accordion>
+                                    </div>
+                                )
+                            })
+                        }
 
-            </div>
+                    </div>
+                    :
+                    <Alert severity="error" sx={{marginTop:'20px'}}>No Job Applied!</Alert>
+            }
         </div>
     );
 

@@ -7,7 +7,7 @@ import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 import {ChangeEvent, useState} from "react";
-import {IconButton, Paper, styled, Tooltip} from "@mui/material";
+import {IconButton, Paper, Snackbar, styled, Tooltip} from "@mui/material";
 import {Delete, FileUpload, PictureAsPdf} from "@mui/icons-material";
 import {useDispatch} from "react-redux";
 import {submitNewApplication} from "../../../store/AppliedJobSlice";
@@ -39,7 +39,7 @@ export const ApplyForm = (props: any) => {
     }
     const handleSubmit = (event: any) => {
         event.preventDefault();
-        console.log('submitted.', candidateData, resume, cover);
+
         // convert file to base64
         const resumeURL = resume ? convertFileToBlobUrl(resume) : null;
         const coverURL = cover ? convertFileToBlobUrl(cover) : null;
@@ -50,13 +50,16 @@ export const ApplyForm = (props: any) => {
             dispatch(submitNewApplication({
                 candidate: {
                     ...candidateData,
-                    resume:resumeURL,
-                    cover:coverURL
+                    resume: resumeURL,
+                    cover: coverURL
                 },
                 job: props.data
             }))
-            setLoading(false);
-            navigate('/applied-jobs');
+            setTimeout(() => {
+                setLoading(false);
+                navigate('/applied-jobs');
+            }, 3000);
+
         } catch (e) {
             setLoading(false);
         }
@@ -89,6 +92,13 @@ export const ApplyForm = (props: any) => {
 
     return (
         <React.Fragment>
+            <Snackbar
+                anchorOrigin={{vertical: 'top', horizontal: "right"}}
+                open={loading}
+                autoHideDuration={6000}
+                message="Job Applied Successfully."
+            />
+
             <Button variant="contained" onClick={handleClickOpen}>
                 Apply on the job
             </Button>
@@ -175,7 +185,9 @@ export const ApplyForm = (props: any) => {
                 <DialogActions>
                     <Button onClick={handleClose} variant={'outlined'} type={'reset'} disabled={loading}>Cancel</Button>
                     <Button variant={'contained'} onClick={handleSubmit} type={'submit'}
-                            disabled={loading}>Apply</Button>
+                            disabled={loading || !candidateData.name || !candidateData.email || !resume || !cover}>
+                        Apply
+                    </Button>
                 </DialogActions>
             </Dialog>
         </React.Fragment>
