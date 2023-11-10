@@ -24,7 +24,6 @@ export const Home = () => {
         setSearched(value);
     }
     const fetchData = async () => {
-        console.log('firing ......')
         try {
             // @ts-ignore
             dispatch(fetchJobsAsync({searched, page: 0}))
