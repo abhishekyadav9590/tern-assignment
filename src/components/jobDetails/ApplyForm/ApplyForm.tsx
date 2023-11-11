@@ -10,7 +10,7 @@ import {ChangeEvent, useState} from "react";
 import {IconButton, Paper, Snackbar, styled, Tooltip} from "@mui/material";
 import {Delete, FileUpload, PictureAsPdf} from "@mui/icons-material";
 import {useDispatch} from "react-redux";
-import {submitNewApplication} from "../../../store/AppliedJobSlice";
+import {addApplied} from "../../../store/AppliedJobSlice";
 import {convertFileToBlobUrl} from "../../../utlis/convertor";
 import {useNavigate} from "react-router-dom";
 
@@ -47,7 +47,7 @@ export const ApplyForm = (props: any) => {
         try {
             setLoading(true);
             // @ts-ignore
-            dispatch(submitNewApplication({
+            dispatch(addApplied({
                 candidate: {
                     ...candidateData,
                     resume: resumeURL,
